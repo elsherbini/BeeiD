@@ -1,14 +1,16 @@
 <head>
-  <title>Sets</title>
+  <title>Bee iD</title>
   <script src="https://api.filepicker.io/v0/filepicker.js"></script>
 </head>
 
 <body>
   <div class="container-fluid">
     <div class="row-fluid">
-      <div id="side-view" class="span2">
-        {{> side}}
+      <div id="topbar" class = "span8">
+        {{>topbar}}
       </div>
+    </div>
+    <div class = "row-fluid">
       <div id="main-view" class="span10">
         {{> main}}
       </div>
@@ -16,33 +18,30 @@
   </div>
 </body>
 
-<template name="main">
-  {{#if set}}
-    <div class="row">
-      <h1 class="span4">{{set}}</h1>
-      <button id="upload" class="btn btn-primary btn-large span3">Upload images</button>
-    </div>
-    
-    <ul class="thumbnails">
-      {{#each photos}}
-        <li class="span3">
-          <div class="thumbnail">
-            <img src="{{url}}" alt="{{name}}" />
-            <h3>{{name}}</h3>
-            <p><a href="{{url}}" class="btn">Download</a></p>
-          </div>
-        </li>
-      {{/each}}
-    </ul>
-  {{/if}}
+<template name="topbar">
+  <h1> Bee iD </h1> 
+  {{ loginButtons }}
 </template>
 
-<template name="side">
-  <h1>Sets</h1>
-  <form id="new-set"><input id="set-name" type="text" placeholder="Set name" /></form>
-  <div id="sets">
-    {{#each sets}}
-      <div class="set">{{name}}</div>
+<template name="main">
+  {{#if currentUser}}
+    <button id="upload" class="btn">Upload images</button>
+  {{else}}
+    <p>Please log in to upload pictures</p>
+  {{/if}}
+  <ul class="thumbnails">
+    {{#each photos}}
+      <li class="span3">
+        <div class="thumbnail">
+          <a href="{{url}}"> <img src="{{url}}" alt="{{name}}" /></a>
+          <p>{{name}}</p>
+          <select class="bee-species" id="{{name}}">
+            {{#each beespecies}}
+              <option value="{{value}}"> {{name}} </option>
+            {{/each}}
+          </select>
+        </div>
+      </li>
     {{/each}}
-  </div>
+  </ul>
 </template>

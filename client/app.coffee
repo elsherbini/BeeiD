@@ -1,53 +1,29 @@
-Sets = new Meteor.Collection "sets"
 Photos = new Meteor.Collection "photos"
 
-Meteor.autosubscribe ->
-  Meteor.subscribe "photos", Session.get "set"
-Meteor.subscribe "sets"  
-
-Template.side.events = 
-  'submit #new-set': (e,t) ->
-    e.preventDefault()
-    
-    if Sets.find(name: t.find('#set-name').value).count()
-      alert "Set already exists!"
-    else
-      Sets.insert
-        name: t.find('#set-name').value
-        time: (new Date).getTime()
-        
-        
-  'click .set': (e,t) ->
-    window.location.href = "/set/#{e.target.innerText}"
-    
-    
-Template.side.sets = ->
-  Sets.find({},
-    sort: time: -1
-  ).fetch()
-  
-  
 Template.main.events = 
   'click #upload': (e,t) ->
     filepicker.getFile 'image/*', multiple: true, persist: true, (uploads) ->
       _.each uploads, (image) ->
+        console.log(image)
         Photos.insert
-          set: Session.get "set"
+          user: Meteor.user()
           name: image.data.filename
           url: image.url
           time: (new Date).getTime()
+    $(".bee-species").select2({})
         
-  
-Template.main.set = ->
-  Session.get "set"  
-  
-
 Template.main.photos = ->
-  Photos.find(
-    {set: Session.get "set"},
-    sort: time: -1
-  )
-  
+  Photos.find()
+
+Template.main.beespecies = ->
+  speciesList = d3.set []
+
+  Photos.find().fetch().forEach (p) ->
+    p.beespecies?.forEach (s) ->
+      unless speciesList.has s.name
+        speciesList.add s.name
+
+  return speciesList.values()
 
 
 
@@ -62,8 +38,9 @@ AppRouter = Backbone.Router.extend
   set: (name) ->
     Session.set "set", name    
     
-  
 Router = new AppRouter
+
 Meteor.startup ->  
-  filepicker.setKey 'ACSqjiD5pQAmoP5oCArRsz'
-  Backbone.history.start pushState: true  
+  filepicker.setKey 'AMV2CxrmpRyqOfsE9qJIAz'
+  Backbone.history.start pushState: true 
+  $(".bee-species").select2({})

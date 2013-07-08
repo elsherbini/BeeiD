@@ -10,4 +10,11 @@ stylus
 coffeescript
 bootstrap
 jquery
-madewith
+insecure
+autopublish
+accounts-password
+accounts-facebook
+accounts-google
+accounts-ui
+select2
+d3
