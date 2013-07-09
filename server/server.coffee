@@ -1,9 +1,2 @@
-Sets   = new Meteor.Collection "sets"
+Species   = new Meteor.Collection "species"
 Photos = new Meteor.Collection "photos"
-
-Meteor.startup ->
-  Meteor.publish "sets", ->
-    Sets.find()
-    
-  Meteor.publish "photos", (set) ->
-    Photos.find set: set

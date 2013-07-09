@@ -19,7 +19,6 @@
 </body>
 
 <template name="topbar">
-  <h1> Bee iD </h1> 
   {{ loginButtons }}
 </template>
 
@@ -34,12 +33,25 @@
       <li class="span3">
         <div class="thumbnail">
           <a href="{{url}}"> <img src="{{url}}" alt="{{name}}" /></a>
-          <p>{{name}}</p>
-          <select class="bee-species" id="{{name}}">
-            {{#each beespecies}}
-              <option value="{{value}}"> {{name}} </option>
-            {{/each}}
-          </select>
+          <p>Bee: {{species}} (votes: {{vote-count}})</p>
+          {{#if suggest}}
+            <p>Pick a species from the list.  
+            <span class="fake-link toggle-suggest"> close </span>
+            </p>
+            <select class="bee-species" id="bee-select {{_id}}">
+              {{#each beespecies}}
+                <option value="{{_id}}"> {{name}} </option>
+              {{/each}}
+            </select>
+            <script type="text/javascript">
+              $('.bee-species').select2({});
+            </script>
+            <p>Or suggest a new one</p> 
+            <form class="new-species"><input id="new-species {{_id}}" class="species-input" type="text" placeholder="Latin name (common name)" />
+            </form>
+          {{else}}
+            <div id="suggest {{_id}}" class="fake-link suggest"> Vote for a different species </div>
+          {{/if}}
         </div>
       </li>
     {{/each}}
