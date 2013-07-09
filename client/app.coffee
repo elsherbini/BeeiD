@@ -12,10 +12,9 @@ Template.main.events =
           url: image.url
           time: (new Date).getTime()
   'submit .new-species': (e,t) ->
-    e.preventDefault()
-    
+    e.preventDefault()    
     if Species.find(name: t.find('.species-input').value).count()
-      alert "Species already exists! Please select it from the list"
+      alert "Species already exists! Please select it from the dropdown"
     else
       Species.insert
         name: t.find('.species-input').value
@@ -23,9 +22,13 @@ Template.main.events =
       console.log t.find('.species-input')
       t.find('.species-input').value = ''
 
+      Session.set "suggest", null
+
   'click .suggest': (e,t) ->
     cssId =  e.currentTarget.getAttribute('id')
     Session.set "suggest", cssId.substring cssId.indexOf(' ') + 1
+  'click .toggle-suggest': (e,t) ->
+    Session.set "suggest", null
     
         
 Template.main.photos = ->
