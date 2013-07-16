@@ -18,17 +18,24 @@ Template.main.events =
     else
       Species.insert
         name: t.find('.species-input').value
-        value: "#"
-      console.log t.find('.species-input')
+        value: "#"      
+      Photos.update(this._id, $push: {species: t.find('.species-input').value, votes: Meteor.userId})
       t.find('.species-input').value = ''
-
       Session.set "suggest", null
-
+    console.log 'submit .new-species'
   'click .suggest': (e,t) ->
     cssId =  e.currentTarget.getAttribute('id')
     Session.set "suggest", cssId.substring cssId.indexOf(' ') + 1
+    console.log 'click .suggest'
   'click .toggle-suggest': (e,t) ->
+    console.log(Photos.find().fetch())
     Session.set "suggest", null
+    console.log('click .toggle-suggest')
+  'change .bee-species': (e,t) ->
+    Photos.update(this._id, $push: {species: t.find('.bee-species').value, votes: Meteor.userId})
+    Session.set "suggest", null
+    console.log 'change .bee-species'
+
     
         
 Template.main.photos = ->
@@ -39,8 +46,6 @@ Template.main.beespecies = ->
 
 Template.main.suggest = ->
   Session.equals "suggest", this._id
-
-
 
 AppRouter = Backbone.Router.extend
   routes:
@@ -55,6 +60,6 @@ AppRouter = Backbone.Router.extend
     
 Router = new AppRouter
 
-Meteor.startup ->  
+Meteor.startup -> 
   filepicker.setKey 'AMV2CxrmpRyqOfsE9qJIAz'
   Backbone.history.start pushState: true 

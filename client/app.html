@@ -33,7 +33,9 @@
       <li class="span3">
         <div class="thumbnail">
           <a href="{{url}}"> <img src="{{url}}" alt="{{name}}" /></a>
-          <p>Bee: {{species}} (votes: {{vote-count}})</p>
+          {{#each species}}
+            <div>{{species}}</div>
+          {{/each}}
           {{#if suggest}}
             <p>Pick a species from the list.  
             <span class="fake-link toggle-suggest"> close </span>
